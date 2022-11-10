@@ -9,10 +9,15 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.springjpa.project.entities.Categoria;
 import com.springjpa.project.entities.Cidade;
+import com.springjpa.project.entities.Cliente;
+import com.springjpa.project.entities.Endereco;
 import com.springjpa.project.entities.Estado;
 import com.springjpa.project.entities.Produto;
+import com.springjpa.project.entities.enums.TipoCliente;
 import com.springjpa.project.repository.CategoriaRepository;
 import com.springjpa.project.repository.CidadeRepository;
+import com.springjpa.project.repository.ClienteRepository;
+import com.springjpa.project.repository.EnderecoRepository;
 import com.springjpa.project.repository.EstadoRepository;
 import com.springjpa.project.repository.ProdutoRepository;
 
@@ -31,6 +36,10 @@ public class ProjetonovoApplication implements CommandLineRunner{
 	private CidadeRepository cidadeRepository;
 	@Autowired
 	private EstadoRepository estadoRepository;
+	@Autowired
+	private ClienteRepository clienteRepository;
+	@Autowired
+	private EnderecoRepository enderecoRepository;
 	
 	@Override
 	public void run(String... args) throws Exception {
@@ -65,6 +74,16 @@ public class ProjetonovoApplication implements CommandLineRunner{
 		estadoRepository.saveAll(Arrays.asList(est1,est2));
 		cidadeRepository.saveAll(Arrays.asList(c1,c2,c3));
 		
+		Cliente cli1 = new Cliente(null, "Maria", "maria@gmail.com", "36378912377", TipoCliente.toEnum(1));
+		cli1.getTelefones().addAll(Arrays.asList("99999-0000", "99999-1111"));
+		
+		Endereco e1 = new Endereco(null, "Rua Flores", "300", "Apto 303", "Jardin", "38220832", cli1, c1);
+		Endereco e2 = new Endereco(null, "Rua Avenida Medeiros", "105", "Sala 800", "Centro", "6260832", cli1, c2);
+		
+		cli1.getEnderecos().addAll(Arrays.asList(e1,e2));
+		
+		clienteRepository.saveAll(Arrays.asList(cli1));
+		enderecoRepository.saveAll(Arrays.asList(e1,e2));
 		
 	}
 }
