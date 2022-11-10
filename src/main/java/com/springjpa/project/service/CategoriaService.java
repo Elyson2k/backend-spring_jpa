@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.springjpa.project.entities.Categoria;
 import com.springjpa.project.repository.CategoriaRepository;
+import com.springjpa.project.service.exceptions.ObjectNotFoundException;
 
 @Service
 public class CategoriaService {
@@ -16,7 +17,7 @@ public class CategoriaService {
 	
 	public Categoria find(Integer id) {
 		Optional<Categoria> findCategoria = categoriaRepository.findById(id);
-		return findCategoria.get();
+		return findCategoria.orElseThrow( () -> new ObjectNotFoundException("ERROR: ID Objeto não encontrado no sistema") );
 	}
 	
 }
