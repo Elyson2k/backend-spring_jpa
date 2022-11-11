@@ -1,14 +1,11 @@
 package com.springjpa.project.dto;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.validation.constraints.NotEmpty;
 
 import com.springjpa.project.entities.Categoria;
-import com.springjpa.project.entities.Produto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,7 +15,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter @Setter
-public class CategoriaDTO implements Serializable{
+public class CategoriaDtoALL implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	@Column(name = "ID")
@@ -28,12 +25,9 @@ public class CategoriaDTO implements Serializable{
 	@Column(name = "NOME")
 	private String nome;
 	
-	private List<Produto> produtos = new ArrayList<>();
-	
-	public CategoriaDTO(Categoria obj) {
+	public CategoriaDtoALL(Categoria obj) {
 		id = obj.getId();
 		nome = obj.getNome();
-		produtos = obj.getProdutos();
 	}
 	
 }
