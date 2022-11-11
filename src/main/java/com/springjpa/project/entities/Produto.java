@@ -3,6 +3,7 @@ package com.springjpa.project.entities;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.Entity;
@@ -17,12 +18,10 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter
-@EqualsAndHashCode
 @Entity
 @Table(name = "PRODUTO")
 public class Produto {
@@ -41,6 +40,7 @@ public class Produto {
 	)
 	private List<Categoria> categorias = new ArrayList<>();
 	
+	@JsonIgnore
 	@OneToMany(mappedBy = "id.produto")
 	private Set<ItemPedido> itens = new HashSet<>();
 	
@@ -53,6 +53,7 @@ public class Produto {
 		this.preco = preco;
 	}	
 	
+	@JsonIgnore
 	public List<Pedido> getPedidos(){
 		List<Pedido> list = new ArrayList<>();
 		for(ItemPedido x : itens) {
@@ -60,5 +61,23 @@ public class Produto {
 		}
 		return list;
 	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Produto other = (Produto) obj;
+		return Objects.equals(id, other.id);
+	}
+	
 	
 }

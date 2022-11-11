@@ -12,9 +12,9 @@ import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.springjpa.project.entities.enums.EstadoPagamento;
 
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -31,6 +31,7 @@ public abstract class  Pagamento implements Serializable{
 	private Integer id;
 	private Integer estadoPagamento;
 	
+	@JsonIgnore
 	@MapsId
 	@OneToOne
 	@JoinColumn(name = "PEDIDO_ID")
