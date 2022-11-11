@@ -4,6 +4,9 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import com.springjpa.project.dto.CategoriaDTO;
@@ -17,6 +20,11 @@ public class CategoriaService {
 	
 	@Autowired
 	private CategoriaRepository categoriaRepository;
+	
+	public List<Categoria> findAll(){
+		List<Categoria> list = categoriaRepository.findAll();
+		return list;
+	}
 	
 	public Categoria find(Integer id) {
 		Optional<Categoria> findCategoria = categoriaRepository.findById(id);
@@ -37,18 +45,20 @@ public class CategoriaService {
 	
 	public void delete(Integer id) {
 		try {
-		Categoria obj = find(id);
-		categoriaRepository.deleteById(obj.getId());
+		categoriaRepository.deleteById(id);
 		} catch(org.springframework.dao.DataIntegrityViolationException e) {
 			throw new DataIntegrityViolationException("ERROR: Há entidades relacionadas, não é possivel deletar.");
-		}
+		}		
 	}
 	
-	public List<Categoria> findAll(){
-		List<Categoria> list = categoriaRepository.findAll();
-		return list;
+	public Page<Categoria> findPage(Integer pages, Integer linesPerPage, String orderBy, String direction){
+		PageRequest pageR = PageRequest.of(pages, linesPerPage, Direction.valueOf(direction), orderBy);
+		return categoriaRepository.findAll(pageR);
 	}
 	
+	// ============================================================================================================================
+	
+	//                                                     FUNÇÕES / METODOS
 	
 	// ============================================================================================================================
 	
