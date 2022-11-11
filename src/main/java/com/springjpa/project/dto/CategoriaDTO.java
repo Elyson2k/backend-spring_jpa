@@ -7,6 +7,8 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.validation.constraints.NotEmpty;
 
+import org.hibernate.validator.constraints.Length;
+
 import com.springjpa.project.entities.Categoria;
 import com.springjpa.project.entities.Produto;
 
@@ -25,6 +27,7 @@ public class CategoriaDTO implements Serializable{
 	private Integer id;
 
 	@NotEmpty(message = "Campo não pode ser vazio!")
+	@Length(min = 3, max = 25)
 	@Column(name = "NOME")
 	private String nome;
 	
