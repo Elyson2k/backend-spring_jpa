@@ -1,6 +1,7 @@
 package com.springjpa.project.entities;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -19,7 +20,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter @Setter
-@EqualsAndHashCode
 @NoArgsConstructor
 @Entity
 @Table(name = "PAGAMENTO")
@@ -41,6 +41,24 @@ public abstract class  Pagamento implements Serializable{
 		this.estadoPagamento = estadoPagamento.getCod();
 		this.pedido = pedido;
 	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Pagamento other = (Pagamento) obj;
+		return Objects.equals(id, other.id);
+	}
+	
 	
 	
 }

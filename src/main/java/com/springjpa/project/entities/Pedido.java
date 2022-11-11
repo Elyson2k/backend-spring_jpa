@@ -2,6 +2,9 @@ package com.springjpa.project.entities;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -10,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -19,7 +23,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter @Setter
-@EqualsAndHashCode
 @NoArgsConstructor
 @Entity
 @Table(name = "PEDIDO")
@@ -41,6 +44,9 @@ public class Pedido implements Serializable{
 	@ManyToOne
 	@JoinColumn(name = "ENDERECO_DE_ENTREGA_ID")
 	private Endereco endereco;
+	
+	@OneToMany(mappedBy = "id.pedido")
+	private Set<ItemPedido> itens = new HashSet<>();
 
 	public Pedido(Integer id, Date instante, Cliente cliente, Endereco endereco) {
 		this.id = id;
@@ -48,6 +54,24 @@ public class Pedido implements Serializable{
 		this.cliente = cliente;
 		this.endereco = endereco;
 	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Pedido other = (Pedido) obj;
+		return Objects.equals(id, other.id);
+	}
+	
 	
 	
 }
