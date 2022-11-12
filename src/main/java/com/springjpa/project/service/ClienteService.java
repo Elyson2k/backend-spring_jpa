@@ -31,14 +31,13 @@ public class ClienteService {
 		return findCli.orElseThrow( () -> new ObjectNotFoundException("ERRO: ID não encontrado no sistema.") );
 	}
 	
-	public Cliente update(Integer id, Cliente cat) {
-		Optional<Cliente> obj = repository.findById(id);
-		var categoria = obj.get();		
-		categoria.setNome(cat.getNome());
-		categoria.setEmail(cat.getEmail());		
-		return repository.save(categoria);
+	public Cliente update(Cliente cat) {
+		Cliente obj = find(cat.getId());
+		updateData(obj,cat);		
+		return repository.save(obj);
 	}
 	
+
 	public void delete(Integer id) {
 		try {
 			repository.deleteById(id);
@@ -64,4 +63,8 @@ public class ClienteService {
 		return new Cliente(obj.getId(), obj.getNome(), obj.getEmail(), null, null);
 	}
 	
+	private void updateData(Cliente obj, Cliente cat) {
+		obj.setNome(cat.getNome());
+		obj.setEmail(cat.getEmail());
+	}
 }

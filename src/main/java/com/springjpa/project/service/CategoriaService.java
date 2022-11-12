@@ -36,11 +36,10 @@ public class CategoriaService {
 		return categoriaRepository.save(obj);
 	}
 	
-	public Categoria update(Integer id, Categoria obj) {
-		Optional<Categoria> obj1 = categoriaRepository.findById(id);
-		var categoria = obj1.get();
-		categoria.setNome(obj.getNome());
-		return categoriaRepository.save(categoria);
+	public Categoria update(Categoria obj) {
+		Categoria newObj = find(obj.getId());
+		updateData(newObj, obj);
+		return categoriaRepository.save(newObj);
 	}
 	
 	public void delete(Integer id) {
@@ -67,7 +66,6 @@ public class CategoriaService {
 	}
 	
 	public void updateData(Categoria x, Categoria y) {
-		x.setId(y.getId());
 		x.setNome(y.getNome());
 	}
 }

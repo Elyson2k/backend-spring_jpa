@@ -43,8 +43,9 @@ public class ClienteController {
 	
 	@PutMapping(value = "/{id}")
 	public ResponseEntity<Void> update(@PathVariable Integer id, @Valid @RequestBody ClienteDTO clienteDto){
+		clienteDto.setId(id);
 		Cliente obj = cliService.fromDto(clienteDto);
-		obj = cliService.update(id, obj);
+		obj = cliService.update(obj);
 		return ResponseEntity.noContent().build();
 	}
 	
