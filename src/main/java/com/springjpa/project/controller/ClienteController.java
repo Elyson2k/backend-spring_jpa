@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.springjpa.project.dto.ClienteDTO;
+import com.springjpa.project.dto.ClienteDtoALL;
 import com.springjpa.project.dto.ClienteNewDtoPOST;
 import com.springjpa.project.entities.Cliente;
 import com.springjpa.project.service.ClienteService;
@@ -32,9 +33,9 @@ public class ClienteController {
 	private ClienteService cliService;
 	
 	@GetMapping
-	public ResponseEntity<List<ClienteDTO>> findAll(){
+	public ResponseEntity<List<ClienteDtoALL>> findAll(){
 		List<Cliente> obj = cliService.findAll();
-		List<ClienteDTO> newObj = obj.stream().map(obj1 -> new ClienteDTO(obj1)).toList();
+		List<ClienteDtoALL> newObj = obj.stream().map(obj1 -> new ClienteDtoALL(obj1)).toList();
 		return ResponseEntity.ok(newObj);
 	}
 	
@@ -46,7 +47,7 @@ public class ClienteController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<Void> insert(@RequestBody ClienteNewDtoPOST obj){
+	public ResponseEntity<Void> insert(@Valid @RequestBody ClienteNewDtoPOST obj){
 		Cliente newObj = cliService.fromDto(obj);
 		newObj = cliService.insertCli(newObj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(newObj.getId()).toUri();

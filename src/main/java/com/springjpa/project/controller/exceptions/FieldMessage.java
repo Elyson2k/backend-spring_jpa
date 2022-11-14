@@ -11,5 +11,5 @@ import lombok.Setter;
 public class FieldMessage {
 	
 	private String fieldName;
-	private String nome;
+	private String message;
 }

@@ -16,6 +16,7 @@ import com.springjpa.project.entities.Cidade;
 import com.springjpa.project.entities.Cliente;
 import com.springjpa.project.entities.Endereco;
 import com.springjpa.project.entities.enums.TipoCliente;
+import com.springjpa.project.repository.CidadeRepository;
 import com.springjpa.project.repository.ClienteRepository;
 import com.springjpa.project.repository.EnderecoRepository;
 import com.springjpa.project.service.exceptions.ObjectNotFoundException;
@@ -27,6 +28,8 @@ public class ClienteService {
 	private ClienteRepository repository;
 	@Autowired
 	private EnderecoRepository endRepo;
+	@Autowired
+	private CidadeRepository cidadeRepository;
 	
 	public List<Cliente> findAll(){
 		List<Cliente> obj = repository.findAll();
@@ -39,6 +42,7 @@ public class ClienteService {
 	}
 	
 	public Cliente insertCli(Cliente obj) {
+		findEmail(obj);
 		obj.setId(null);
 		repository.save(obj);
 		endRepo.saveAll(obj.getEnderecos());
@@ -76,23 +80,31 @@ public class ClienteService {
 		return new Cliente(obj.getId(), obj.getNome(), obj.getEmail(), null, null);
 	}
 	
-	public Cliente fromDto(ClienteNewDtoPOST obj) {
-		
-		Cliente cli = new Cliente(null, obj.getNome(), obj.getEmail(), obj.getCpfOuCnpj(), TipoCliente.toEnum(obj.getTipoCliente()));
-		Cidade cidade = new Cidade(obj.getCidadeId(), null, null);
-		Endereco end = new Endereco(null, obj.getLogradouro(), obj.getNumero(), obj.getComplemento(), obj.getBairro(), obj.getCep(), cli, cidade);
+	public Cliente fromDto(ClienteNewDtoPOST objDto) {
+		Cliente cli = new Cliente(null, objDto.getNome(), objDto.getEmail(), objDto.getCpfOuCnpj(),TipoCliente.toEnum(objDto.getTipoCliente()));
+		Optional<Cidade> cid = cidadeRepository.findById(objDto.getCidadeId());
+		Endereco end = new Endereco(null, objDto.getLogradouro(), objDto.getNumero(), objDto.getComplemento(), objDto.getBairro(), objDto.getCep(), cli, cid.get());
 		cli.getEnderecos().add(end);
-		
-		cli.getTelefones().add(obj.getTelefone1());
-		if(obj.getTelefone2() != null) {
-			cli.getTelefones().add(obj.getTelefone2());
+		cli.getTelefones().add(objDto.getTelefone1());
+		if (objDto.getTelefone2() != null) {
+			cli.getTelefones().add(objDto.getTelefone2());
 		}
-		
+		if (objDto.getTelefone3() != null) {
+			cli.getTelefones().add(objDto.getTelefone3());
+		}
 		return cli;
 	}
-	
+
 	private void updateData(Cliente obj, Cliente cat) {
 		obj.setNome(cat.getNome());
 		obj.setEmail(cat.getEmail());
 	}
+	
+	public void findEmail(Cliente obj) {
+		Optional<Cliente> find = repository.findByEmail(obj.getEmail());
+		if(find.isPresent()) {
+			throw new com.springjpa.project.service.exceptions.DataIntegrityViolationException("ERROR: Email ja cadastrado no sistema");
+		}
+	}
+	
 }
