@@ -53,6 +53,14 @@ public class Pedido implements Serializable{
 		this.cliente = cliente;
 		this.endereco = endereco;
 	}
+	
+	public Double getTotal() {
+		Double soma = 0.0;
+		for(ItemPedido x : itens) {
+			soma+=x.getSubTotal();
+		}
+		return soma;
+	}
 
 	@Override
 	public int hashCode() {

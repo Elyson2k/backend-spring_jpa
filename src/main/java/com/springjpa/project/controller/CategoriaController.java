@@ -27,7 +27,7 @@ import com.springjpa.project.service.CategoriaService;
 
 @RestController
 @RequestMapping(value = "api/v1/categorias")
-public class CategoriaResource {
+public class CategoriaController {
 	
 	@Autowired
 	private CategoriaService categoriaSerivce;
