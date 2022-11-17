@@ -17,6 +17,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -44,6 +46,7 @@ public class Pedido implements Serializable{
 	@JoinColumn(name = "ENDERECO_DE_ENTREGA_ID")
 	private Endereco endereco;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy = "id.pedido")
 	private Set<ItemPedido> itens = new HashSet<>();
 
@@ -78,6 +81,25 @@ public class Pedido implements Serializable{
 		Pedido other = (Pedido) obj;
 		return Objects.equals(id, other.id);
 	}
-	
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Pedido número: ");
+		builder.append(getId());
+		builder.append(", Instante: ");
+		builder.append(getInstante());
+		builder.append(", Cliente: ");
+		builder.append(getCliente().getNome());
+		builder.append(", Situação do pagamento: ");
+		builder.append(getPagamento().getEstadoPagamento());
+		builder.append("\nDetalhes:\n");
+		for (ItemPedido ip : getItens()) {
+			builder.append(ip.toString());
+		}
+		builder.append("Valor total: ");
+		builder.append(getTotal());
+		return builder.toString();
+	}
 	
 }
