@@ -1,5 +1,17 @@
-{"properties": [{
-  "name": "pring.datasource.url",
-  "type": "java.lang.String",
-  "description": "A description for 'pring.datasource.url'"
-}]}
+{"properties": [
+  {
+    "name": "pring.datasource.url",
+    "type": "java.lang.String",
+    "description": "A description for 'pring.datasource.url'"
+  },
+  {
+    "name": "default.sender",
+    "type": "java.lang.String",
+    "description": "A description for 'default.sender'"
+  },
+  {
+    "name": "default.recipient",
+    "type": "java.lang.String",
+    "description": "A description for 'default.recipient'"
+  }
+]}

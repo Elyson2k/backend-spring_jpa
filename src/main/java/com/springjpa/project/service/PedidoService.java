@@ -29,7 +29,8 @@ public class PedidoService {
 	private ProdutoRepository prodRepository;
 	@Autowired
 	private ItemPedidoRepository ipRepository;
-	
+	@Autowired
+	private EmailService emailService;
 	
 	public Pedido find(Integer id) {
 		Optional<Pedido> findPed = repository.findById(id);
@@ -53,6 +54,7 @@ public class PedidoService {
 			ip.setPedido(ped);
 		}
 		ipRepository.saveAll(ped.getItens());
+		emailService.sendOrderConfirmationEmail(ped);
 		return ped;
 	}
 	
